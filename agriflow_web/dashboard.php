@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include 'db_connect.php'; // Ensure this file defines $pdo
+include 'db_connect.php'; // ensure this file defines $pdo
 
 try {
     // 1. Get Latest Sensor Data + Previous reading for trend analysis
