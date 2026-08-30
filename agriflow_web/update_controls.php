@@ -6,14 +6,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $value = $_POST['value'] ?? '';
 
     try {
-        // --- 1. MODE TOGGLE ---
         if ($type === 'mode') {
             $autoLock = ($value === 'auto') ? 0 : 1;
             $stmt = $pdo->prepare("UPDATE device_controls SET mode = ?, auto_lock = ? WHERE id = 1");
             $stmt->execute([$value, $autoLock]);
         }
 
-        // --- 2. PUMP CONTROL (Manual Click) ---
+        // --- PUMP CONTROL ---
         elseif ($type === 'pump') {
             $newStatus = (int)$value;
             $current = $pdo->query("SELECT pump_status FROM device_controls WHERE id = 1")->fetchColumn();
