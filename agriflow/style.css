@@ -1,0 +1,135 @@
+:root {
+    --bg: #f0f4f0;
+    --sidebar-bg: #ffffff;
+    --accent: #2e7d32;
+    --text: #1a1c1a;
+    --secondary: #5c635c;
+    --danger: #d32f2f;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid #e0e6e0;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.nav-logo { font-weight: 800; color: var(--accent); font-size: 1.2rem; text-decoration: none; margin-bottom: 3rem; display: block; }
+.nav-links { list-style: none; padding: 0; margin: 0; }
+.nav-links li { margin-bottom: 0.5rem; }
+.nav-links a { 
+    text-decoration: none; color: var(--secondary); font-weight: 500; 
+    display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px;
+    transition: var(--transition);
+}
+.nav-links a:hover, .nav-links a.active { background: #e8f5e9; color: var(--accent); }
+.logout-btn { color: var(--danger); text-decoration: none; font-weight: 600; padding: 12px; border-radius: 12px; }
+.logout-btn:hover { background: #fee2e2; }
+
+/* Main Content Area */
+main {
+    flex: 1;
+    margin-left: 280px;
+    padding: 2rem;
+    transition: var(--transition);
+    max-width: 100%;
+}
+
+.mobile-nav { display: none; }
+
+header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 1rem; 
+    margin-bottom: 2rem; 
+}
+
+/* Grid Framework */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.card .value { font-size: 2.2rem; font-weight: 700; color: var(--accent); margin: 10px 0; }
+
+/* Irrigation Control Panel */
+.control-panel {
+    background: #1a1c1a;
+    color: white;
+    padding: 2rem;
+    border-radius: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.btn-action {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 992px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.active { transform: translateX(0); }
+    main { margin-left: 0; padding: 5rem 1.5rem 2.5rem; }
+    
+    .mobile-nav {
+        display: flex;
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        background: white;
+        padding: 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e0e6e0;
+        z-index: 1001;
+    }
+    
+    #menuBtn { background: none; border: none; font-size: 1.8rem; color: var(--accent); cursor: pointer; }
+}
+
+@media (max-width: 600px) {
+    header h1 { font-size: 1.5rem; }
+    .control-panel { flex-direction: column; text-align: center; }
+    .btn-action { width: 100%; }
+}
