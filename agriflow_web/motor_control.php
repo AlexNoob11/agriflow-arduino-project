@@ -7,11 +7,11 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// FETCH ALL PROFILES FROM THE DATABASE
+// fetch all the database
 $stmt = $pdo->query("SELECT * FROM plant_profiles ORDER BY plant_name ASC");
 $db_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// CREATE A JS-FRIENDLY ARRAY FOR THE FRONTEND
+// js array
 $js_library = [];
 foreach ($db_profiles as $p) {
     $js_library[$p['plant_key']] = [
