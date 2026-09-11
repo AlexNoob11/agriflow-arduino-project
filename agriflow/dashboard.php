@@ -5,10 +5,10 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include 'db_connect.php'; // Ensure this file defines $pdo
+include 'db_connect.php';
 
 try {
-    // 1. Get Latest Sensor Data + Previous reading for trend analysis
+    // Get Latest Sensor Data + Previous reading for trend analysis
     $latestStmt = $pdo->query("SELECT * FROM sensor_logs ORDER BY timestamp DESC LIMIT 2");
     $readings = $latestStmt->fetchAll();
     
@@ -19,13 +19,13 @@ try {
     $moistureDiff = $latest['moisture'] - $previous['moisture'];
     $tempDiff = $latest['temp'] - $previous['temp'];
 
-    // 2. Get Device Status
+    // Get Device Status
     $controlStmt = $pdo->query("SELECT * FROM device_controls WHERE id = 1");
     $controls = $controlStmt->fetch();
     $mode = $controls['mode'] ?? 'manual';
     $pump = $controls['pump_status'] ?? 0;
 
-    // 3. Chart Data (Last 15 readings for better resolution)
+    // Chart Data (Last 15 readings for better resolution)
     $chartStmt = $pdo->query("SELECT moisture, temp, ph, timestamp FROM sensor_logs ORDER BY timestamp DESC LIMIT 15");
     $chartRows = array_reverse($chartStmt->fetchAll());
 
@@ -38,7 +38,7 @@ try {
         $tempData[] = $row['temp'];
     }
 
-    // 4. Live Weather Forecast & Parameters Engine
+    // Live Weather Forecast & Parameters Engine
     $searchLocation = isset($_GET['search_location']) ? trim($_GET['search_location']) : 'Himamaylan,PH';
     $temperatureUnit = isset($_GET['unit']) && $_GET['unit'] === 'F' ? 'F' : 'C';
 
