@@ -5,7 +5,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Database Connection
 $host = 'localhost';
 $dbname = 'agriflow_db'; 
 $username = 'root';
@@ -14,8 +13,6 @@ $password = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // --- 1. Handle Deletion ---
     
     // Individual Deletion
     if (isset($_POST['delete_id'])) {
@@ -32,7 +29,7 @@ try {
         exit();
     }
 
-    // --- 2. Setup Filtering Logic ---
+    // Setup Filtering Logic
     $filter_date = $_GET['filter_date'] ?? '';
     
     $query_str = "
@@ -59,7 +56,7 @@ try {
     $stmt->execute();
     $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // --- 3. Compute Real-time Meta Analytics ---
+    // Compute Real-time Meta Analytics
     $total_water = 0;
     $total_duration = 0;
     $total_entries = count($logs);
