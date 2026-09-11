@@ -15,7 +15,7 @@ try {
     $stmt->execute([$user_id]);
     $user = $stmt->fetch();
 
-    // FIXED: Protect against deleted or missing database rows
+    // Protect against deleted or missing database rows
     if (!$user) {
         session_destroy();
         header("Location: index.php");
