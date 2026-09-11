@@ -27,7 +27,6 @@
             flex-direction: column;
         }
 
-        /* Navigation */
         nav {
             padding: 1.5rem 5%;
             display: flex;
@@ -50,7 +49,6 @@
             text-decoration: none;
         }
 
-        /* Hero Section */
         main {
             flex: 1;
             display: flex;
@@ -113,7 +111,6 @@
             box-shadow: 0 10px 20px rgba(46, 125, 50, 0.2);
         }
 
-        /* Modal / Overlay */
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -135,7 +132,6 @@
             position: relative;
         }
 
-        /* Role Selector Styling */
         .role-selector {
             display: flex;
             background: #f0f2f0;
@@ -162,7 +158,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* Form Styling */
         .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--secondary); }
         input {
@@ -284,7 +279,7 @@
                 nameField.style.display = 'none';
                 submitBtn.innerText = "Sign In";
             }
-            // Reset to user role on open
+            
             setRole('user');
         }
 
