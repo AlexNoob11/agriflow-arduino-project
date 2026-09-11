@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $action = $_POST['action'];
-    $role   = $_POST['role']; // 'admin' or 'user'
+    $role   = $_POST['role'];
     $email  = $_POST['email'];
     $password = $_POST['password'];
 
