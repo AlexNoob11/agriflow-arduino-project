@@ -6,14 +6,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $value = $_POST['value'] ?? '';
 
     try {
-        // --- 1. MODE TOGGLE ---
+        // mode toggle
         if ($type === 'mode') {
             $autoLock = ($value === 'auto') ? 0 : 1;
             $stmt = $pdo->prepare("UPDATE device_controls SET mode = ?, auto_lock = ? WHERE id = 1");
             $stmt->execute([$value, $autoLock]);
         }
 
-        // --- 2. PUMP CONTROL (Manual Click) ---
+        // pump control
         elseif ($type === 'pump') {
             $newStatus = (int)$value;
             $current = $pdo->query("SELECT pump_status FROM device_controls WHERE id = 1")->fetchColumn();
@@ -23,10 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([$newStatus]);
 
                 if ($newStatus == 1) {
-                    // Start Log
                     $pdo->prepare("INSERT INTO pump_logs (start_time) VALUES (NOW())")->execute();
                 } else {
-                    // Stop Log & Calculate Liters
                     $pdo->prepare("
                         UPDATE pump_logs 
                         SET end_time = NOW(), 
@@ -39,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // --- 3. PLANT PROFILE ---
+        // plant profile
         elseif ($type === 'plant') {
             $stmt = $pdo->prepare("UPDATE device_controls SET selected_plant = ? WHERE id = 1");
             $stmt->execute([$value]);
