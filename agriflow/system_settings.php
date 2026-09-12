@@ -5,7 +5,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Database Connection
 $host = "localhost";
 $user = "root";
 $pass = "";
