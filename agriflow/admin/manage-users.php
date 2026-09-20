@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. Security Gate
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php?status=unauthorized");
     exit();
@@ -9,10 +8,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 include 'db_connect.php';
 
-// 2. Handle User Deletion
 if (isset($_GET['delete_id'])) {
     $deleteId = $_GET['delete_id'];
-    // Prevent admin from deleting themselves
     if ($deleteId != $_SESSION['user_id']) {
         $deleteStmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
         $deleteStmt->execute([$deleteId]);
@@ -21,7 +18,6 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-// 3. Fetch Users (with optional search)
 $search = $_GET['search'] ?? '';
 try {
     if (!empty($search)) {
