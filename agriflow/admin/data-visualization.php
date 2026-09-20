@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. Security Gate
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php?status=unauthorized");
     exit();
@@ -9,7 +8,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 include 'db_connect.php';
 
-// 1. Handle Filter Logic
+// Handle Filter Logic
 $filter = $_GET['filter'] ?? '24h';
 $interval = "1 DAY"; // Default
 $title_label = "Last 24 Hours";
@@ -23,8 +22,8 @@ if ($filter === '7d') {
 }
 
 try {
-    // 2. Fetch data for Chart (limited to avoid crashing if logs are frequent)
-    // We order by ASC for the chart (Oldest to Newest)
+    // Fetch data for Chart (limited to avoid crashing if logs are frequent)
+
     $stmt = $pdo->prepare("SELECT moisture, temp, ph, timestamp FROM sensor_logs 
                            WHERE timestamp >= NOW() - INTERVAL $interval 
                            ORDER BY timestamp ASC LIMIT 100");
@@ -43,7 +42,7 @@ try {
         $tempData[] = $log['temp'];
     }
 
-    // 3. Fetch data for Table (Newest to Oldest)
+    // Fetch data for Table (Newest to Oldest)
     $stmtTable = $pdo->prepare("SELECT * FROM sensor_logs 
                                 WHERE timestamp >= NOW() - INTERVAL $interval 
                                 ORDER BY timestamp DESC LIMIT 50");
