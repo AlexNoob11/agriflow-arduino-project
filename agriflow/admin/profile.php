@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. Security Gate
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php");
     exit();
@@ -13,7 +12,7 @@ $admin_id = $_SESSION['user_id'];
 $message = "";
 $error = "";
 
-// 2. Fetch current admin data
+// Fetch current admin data
 try {
     $stmt = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
     $stmt->execute([$admin_id]);
@@ -22,7 +21,7 @@ try {
     error_log($e->getMessage());
 }
 
-// 3. Handle Profile Update
+// Handle Profile Update
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullname = trim($_POST['fullname']);
     $email = trim($_POST['email']);
@@ -31,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         if (!empty($new_pass)) {
-            // If changing password, ensure they match
             if ($new_pass === $confirm_pass) {
                 $hashed = password_hash($new_pass, PASSWORD_DEFAULT);
                 $update = $pdo->prepare("UPDATE admins SET fullname = ?, email = ?, password = ? WHERE id = ?");
@@ -77,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .profile-sidebar {
-            background: var(--text); /* Deep Admin Blue */
+            background: var(--text);
             color: white;
             padding: 40px;
             width: 300px;
