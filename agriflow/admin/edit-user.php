@@ -10,7 +10,7 @@ include 'db_connect.php';
 $message = "";
 $error = "";
 
-// 1. Load User Data
+// Load User Data
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
@@ -22,7 +22,7 @@ if (isset($_GET['id'])) {
     }
 }
 
-// 2. Handle Update Logic
+// Handle Update Logic
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
     $fullname = trim($_POST['fullname']);
@@ -31,12 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         if (!empty($new_password)) {
-            // Update with password
             $hashed = password_hash($new_password, PASSWORD_DEFAULT);
             $updateStmt = $pdo->prepare("UPDATE users SET fullname = ?, email = ?, password = ? WHERE id = ?");
             $updateStmt->execute([$fullname, $email, $hashed, $id]);
         } else {
-            // Update without changing password
             $updateStmt = $pdo->prepare("UPDATE users SET fullname = ?, email = ? WHERE id = ?");
             $updateStmt->execute([$fullname, $email, $id]);
         }
