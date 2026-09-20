@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. STRICT SECURITY: Verify user is logged in AND is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php?status=unauthorized");
     exit();
@@ -10,12 +9,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 include 'db_connect.php'; 
 
 try {
-    // 2. ADMIN ANALYTICS: System-wide counts
+    //
     $userCount = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
     $logCount = $pdo->query("SELECT COUNT(*) FROM sensor_logs")->fetchColumn();
     $adminCount = $pdo->query("SELECT COUNT(*) FROM admins")->fetchColumn();
 
-    // 3. GET SENSOR DATA (For a summary overview)
+    // GET SENSOR DATA (For a summary overview)
     $latestStmt = $pdo->query("SELECT * FROM sensor_logs ORDER BY timestamp DESC LIMIT 2");
     $readings = $latestStmt->fetchAll();
     
@@ -23,10 +22,10 @@ try {
     $previous = $readings[1] ?? $latest;
     $moistureDiff = $latest['moisture'] - $previous['moisture'];
 
-    // 4. GET RECENT USER REGISTRATIONS (Admin specific)
+    // GET RECENT USER REGISTRATIONS (Admin specific)
     $recentUsers = $pdo->query("SELECT fullname, email, created_at FROM users ORDER BY created_at DESC LIMIT 5")->fetchAll();
 
-    // 5. CHART DATA (Aggregate System Activity)
+    // CHART DATA (Aggregate System Activity)
     $chartStmt = $pdo->query("SELECT moisture, timestamp FROM sensor_logs ORDER BY timestamp DESC LIMIT 20");
     $chartRows = array_reverse($chartStmt->fetchAll());
 
@@ -51,7 +50,7 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --admin-primary: #1a3a5f; /* Deep Admin Blue */
+            --admin-primary: #1a3a5f;
             --admin-accent: #3498db;
             --glass: rgba(255, 255, 255, 0.9);
             --shadow: 0 10px 40px rgba(0,0,0,0.08);
@@ -172,8 +171,7 @@ try {
                     <canvas id="adminChart"></canvas>
                 </div>
             </div>
-
-            <!-- Recent User Signups -->
+            
             <div class="user-list">
                 <h3 style="margin-top: 0;">Recent Registrations</h3>
                 <table>
