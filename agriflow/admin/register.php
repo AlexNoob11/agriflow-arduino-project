@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Security: Only admins should be able to manually create new users from here
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php");
     exit();
