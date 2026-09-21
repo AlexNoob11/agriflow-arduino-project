@@ -32,7 +32,6 @@
         }
     }
 
-    // Close sidebar when clicking outside on mobile
     document.addEventListener('click', (e) => {
         if (window.innerWidth <= 992 && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
             sidebar.classList.remove('active');
