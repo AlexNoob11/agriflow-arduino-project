@@ -1,20 +1,18 @@
 <?php
 session_start();
 
-// 1. Security Gate
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php?status=unauthorized");
     exit();
 }
 
-// Database Connection
 $host = "localhost";
 $user = "root";
 $pass = "";
 $db   = "agriflow_db";
 $conn = new mysqli($host, $user, $pass, $db);
 
-// 1. Handle Form Update for Device Controls
+// Handle Form Update for Device Controls
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_settings'])) {
     $mode = $conn->real_escape_string($_POST['mode']);
     $plant = $conn->real_escape_string($_POST['selected_plant']);
@@ -24,15 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_settings'])) {
     echo "<script>alert('Hardware Configuration Updated!');</script>";
 }
 
-// 2. Fetch Current Device Settings & Plant Profiles
+// Fetch Current Device Settings & Plant Profiles
 $device = $conn->query("SELECT * FROM device_controls WHERE id=1")->fetch_assoc();
 $plants_query = $conn->query("SELECT * FROM plant_profiles ORDER BY plant_name ASC");
 
-// 3. Filter Logic for Reports
+// Filter Logic for Reports
 $start_date = $_GET['start_date'] ?? date('Y-m-d', strtotime('-7 days'));
 $end_date = $_GET['end_date'] ?? date('Y-m-d');
 
-// 4. Fetch Stats based on Filter
+// Fetch Stats based on Filter
 $stats_q = $conn->prepare("SELECT AVG(moisture) as avg_m FROM sensor_logs WHERE DATE(timestamp) BETWEEN ? AND ?");
 $stats_q->bind_param("ss", $start_date, $end_date);
 $stats_q->execute();
@@ -43,7 +41,7 @@ $water_q->bind_param("ss", $start_date, $end_date);
 $water_q->execute();
 $total_water = $water_q->get_result()->fetch_assoc()['total_l'] ?? 0;
 
-// 5. Fetch Chart Data based on Filter
+// Fetch Chart Data based on Filter
 $chart_labels = [];
 $chart_data = [];
 $usage_query = $conn->prepare("
@@ -77,8 +75,7 @@ while($row = $result->fetch_assoc()) {
             --border-color: #eef2f6;
             --bg-light: #fafbfc;
         }
-
-        /* Container Alignment */
+    
         .settings-container { 
             display: grid; 
             grid-template-columns: 350px 1fr; 
@@ -94,7 +91,6 @@ while($row = $result->fetch_assoc()) {
             overflow: hidden;
         }
 
-        /* Form Styling */
         .settings-card { padding: 24px; }
         .form-group { margin-bottom: 20px; }
         .form-group label { 
@@ -117,7 +113,6 @@ while($row = $result->fetch_assoc()) {
         }
         .form-group input:focus { border-color: var(--primary-green); outline: none; }
         
-        /* Report Header & Filter Alignment */
         .report-preview { padding: 32px; }
         .report-header {
             display: flex;
@@ -138,7 +133,6 @@ while($row = $result->fetch_assoc()) {
             margin-bottom: 24px;
         }
 
-        /* Buttons (Kept original style but aligned) */
         .btn-update { 
             background: var(--primary-green); 
             color: white; 
@@ -165,7 +159,6 @@ while($row = $result->fetch_assoc()) {
             color: #455a64;
         }
 
-        /* Stats Cards */
         .stats-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
