@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// 1. STRICT SECURITY: Verify user is logged in AND is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php?status=unauthorized");
     exit();
 }
 
-// FIX: Added the database connection include
 require_once 'db_connect.php'; 
 
 try {
@@ -24,7 +22,6 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agriflow | Threshold Settings</title>
-    <!-- Updated path to CSS -->
     <link rel="stylesheet" href="style.css">
     <style>
         :root {
@@ -117,7 +114,6 @@ try {
         </section>
     </main>
 
-    <!-- Modal remains the same but styled better -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-card">
             <h2 id="modalTitle" style="margin-top:0; color: #1a3a5f;">Plant Profile</h2>
