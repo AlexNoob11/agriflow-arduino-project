@@ -12,7 +12,7 @@ if ($m !== null) {
     $stmt->execute([$m, $t, $p]);
 }
 
-// 1. GET CURRENT SYSTEM STATE
+// GET CURRENT SYSTEM STATE
 $controls = $pdo->query("SELECT * FROM device_controls WHERE id = 1")->fetch(PDO::FETCH_ASSOC);
 
 $mode = $controls['mode'];
@@ -21,8 +21,7 @@ $plantKey = $controls['selected_plant'] ?? 'general';
 $autoLock = (int)$controls['auto_lock'];
 
 $desiredPump = $dbPump;
-// 2. FETCH DYNAMIC THRESHOLDS FROM DATABASE
-// Instead of a hardcoded array, we query the settings you saved in your Threshold page
+// FETCH DYNAMIC THRESHOLDS FROM DATABASE
 
 $stmtProfile = $pdo->prepare("SELECT low_threshold, high_threshold FROM plant_profiles WHERE plant_key = ?");
 $stmtProfile->execute([$plantKey]);
@@ -33,7 +32,7 @@ if (!$profile) {
     $profile = ['low_threshold' => 17.0, 'high_threshold' => 60.0];
 }
 
-// 3. AUTO MODE LOGIC (SMART GUARD)
+// AUTO MODE LOGIC
 if ($mode === 'auto' && $m !== null && $autoLock === 0) {
 
     // SAFETY CHECK: If moisture is 0 or less, stop the pump.
@@ -50,7 +49,7 @@ if ($mode === 'auto' && $m !== null && $autoLock === 0) {
     }
 }
 
-// 4. UPDATE DATABASE & SYNC LOGS
+// UPDATE DATABASE & SYNC LOGS
 if ($desiredPump !== $dbPump) {
     // Update the control state
     $stmtUpdate = $pdo->prepare("UPDATE device_controls SET pump_status = ? WHERE id = 1");
