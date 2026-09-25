@@ -78,7 +78,6 @@ try {
         }
     }
 
-    // LIVE REQUEST BLOCK 2: 5-Day Forecast Data 
     $forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" . urlencode($searchLocation) . "&units=" . $apiUnits . "&appid=" . $apiKey;
     $forecastResponse = @file_get_contents($forecastUrl, false, $context);
     
