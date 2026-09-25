@@ -21,7 +21,6 @@ $plantKey = $controls['selected_plant'] ?? 'general';
 $autoLock = (int)$controls['auto_lock'];
 
 $desiredPump = $dbPump;
-// FETCH DYNAMIC THRESHOLDS FROM DATABASE
 
 $stmtProfile = $pdo->prepare("SELECT low_threshold, high_threshold FROM plant_profiles WHERE plant_key = ?");
 $stmtProfile->execute([$plantKey]);
