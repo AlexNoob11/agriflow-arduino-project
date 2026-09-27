@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 include 'db_connect.php'; 
 
 try {
-    //
     $userCount = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
     $logCount = $pdo->query("SELECT COUNT(*) FROM sensor_logs")->fetchColumn();
     $adminCount = $pdo->query("SELECT COUNT(*) FROM admins")->fetchColumn();
